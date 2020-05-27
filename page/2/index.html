@@ -152,6 +152,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Publish:Subscribe" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/11/Publish:Subscribe/">从观察者设计模式比较接口和委托</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/11/Publish:Subscribe/" class="archive-article-date">
+  	<time datetime="2017-08-11T07:51:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用本文记录分别通过接口和委托来实现观察者设计模式，并比较两者的区别。</p>
+<h3 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h3><p>假设我们要去M记吃饭，我们点完餐和付完钱后不是立刻拿到我们所点的美食，店员需要时间给我们去准备这些食物，但我们不清楚他们什么时候能准备好，所以我们不应该频繁地去询问他们是否准备好了，而应该让店员去主动提醒我们，这种情况下用观察者设计模式去实现，既可以让观察者和被观察者的逻辑完全分开，也让代码更具有可维护性。</p>
+<h3 id="接口实现观察者模式"><a href="#接口实现观察者模式" class="headerlink" title="接口实现观察者模式"></a>接口实现观察者模式</h3><p>首先通过接口来实现观察者设计模式，下面是代码：    </p>
+<p><strong>接口部分代码：</strong>这里只给出观察者部分的接口。（最好被观察者(Subject)本身关于观察者的信息和方法也用超类进行规范）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace Mytest</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICateenObserver</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">GetNotify</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>被观察者部分代码:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line"></span><br><span class="line">namespace Mytest</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cateen</span></span></span><br><span class="line"><span class="class">	</span>&#123;</span><br><span class="line">		<span class="keyword">public</span> Dictionary&lt;<span class="keyword">int</span>, ICateenObserver&gt; guests;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="title">Cateen</span> <span class="params">()</span></span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">        	guests = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">int</span>, ICateenObserver&gt;();</span><br><span class="line">			count = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addGuest</span><span class="params">(ICateenObserver guest)</span></span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">			count++;</span><br><span class="line">       	guests.Add(count, guest);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Notify</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">            ICateenObserver tempICateenObserver;</span><br><span class="line">            <span class="keyword">if</span> (guests.TryGetValue(num, out tempICateenObserver))</span><br><span class="line">            &#123;</span><br><span class="line">                tempICateenObserver.GetNotify();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"None this Guest!"</span>);  </span><br><span class="line">            &#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>观察者部分代码：</strong>这里只给出一种观察者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">   public class LunchGuy : ICateenObserver</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">private</span> <span class="keyword">int</span> _num;</span><br><span class="line">        <span class="keyword">private</span> string name&#123;get;set;&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">public</span> <span class="keyword">int</span> num &#123;</span><br><span class="line">			get</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">return</span> _num;</span><br><span class="line">			&#125;</span><br><span class="line">			set</span><br><span class="line">			&#123;</span><br><span class="line">				_num = value;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">LunchGuy</span> <span class="params">(string name)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetNotify</span><span class="params">()</span></span>&#123;</span><br><span class="line">            Console.WriteLine(<span class="string">"It's time for "</span> + name +<span class="string">" to get lunch!"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行部分：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace Mytest</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            Cateen c = <span class="keyword">new</span> Cateen();</span><br><span class="line">            c.addGuest(<span class="keyword">new</span> LunchGuy(<span class="string">"hello"</span>));</span><br><span class="line">            c.addGuest(<span class="keyword">new</span> LunchGuy(<span class="string">"world"</span>));</span><br><span class="line">            c.addGuest(<span class="keyword">new</span> LunchGuy(<span class="string">"HiphopMan"</span>));</span><br><span class="line">            c.addGuest(<span class="keyword">new</span> LunchGuy(<span class="string">"tt"</span>));</span><br><span class="line">            <span class="comment">//int num = Convert.ToInt32(Console.ReadLine());</span></span><br><span class="line">            c.Notify(<span class="number">3</span>);</span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong><br><img src="/2017/08/11/Publish:Subscribe/running1.png" alt="运行结果1"></p>
+<h3 id="委托-事件-实现观察者模式"><a href="#委托-事件-实现观察者模式" class="headerlink" title="委托(事件)实现观察者模式"></a>委托(事件)实现观察者模式</h3><p>这里，我们通过委托来实现相同功能。</p>
+<p><strong>被观察者部分代码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace DelegatePattern</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cateen</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> count;</span><br><span class="line">        <span class="comment">//委托</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> delegate <span class="keyword">void</span> <span class="title">GetNotifyMethod</span><span class="params">(<span class="keyword">int</span> num)</span></span>;</span><br><span class="line">        <span class="keyword">public</span> event GetNotifyMethod GetNotifyEvent;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Cateen</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            count = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Notify</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (GetNotifyEvent != <span class="keyword">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Delegate[] tempDelegate1 = GetNotifyEvent.GetInvocationList();</span><br><span class="line">                <span class="keyword">int</span> delegateCount1 = tempDelegate1.Length;</span><br><span class="line">                GetNotifyEvent(num);</span><br><span class="line">                Delegate[] tempDelegate2 = GetNotifyEvent.GetInvocationList();</span><br><span class="line">                <span class="keyword">int</span> delegateCount2 = tempDelegate2.Length;</span><br><span class="line">                <span class="keyword">if</span> (delegateCount1 == delegateCount2)</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(<span class="string">"None this Guest!"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>观察者部分代码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace DelegatePattern</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LunchGuy</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> _num;</span><br><span class="line">        <span class="keyword">private</span> string name&#123;get;set;&#125;</span><br><span class="line">        <span class="keyword">private</span> Cateen cateen;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> num &#123;</span><br><span class="line">            get</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> _num;</span><br><span class="line">            &#125;</span><br><span class="line">            set</span><br><span class="line">            &#123;</span><br><span class="line">                _num = value;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">LunchGuy</span><span class="params">(string name, Cateen cateen)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.name = name;</span><br><span class="line">            <span class="keyword">this</span>.cateen = cateen;</span><br><span class="line">            <span class="keyword">this</span>.num = ++cateen.count;</span><br><span class="line">            cateen.GetNotifyEvent += <span class="keyword">this</span>.GetNotify;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetNotify</span><span class="params">(<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.num == num)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">"It's time for "</span> + name +<span class="string">" to get lunch!"</span>);</span><br><span class="line">                cateen.GetNotifyEvent -= <span class="keyword">this</span>.GetNotify;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行部分：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">using System;</span><br><span class="line"></span><br><span class="line">namespace DelegatePattern</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Test</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            Cateen c = <span class="keyword">new</span> Cateen();</span><br><span class="line">            LunchGuy LunchGuy1 = <span class="keyword">new</span> LunchGuy(<span class="string">"hello"</span>, c);</span><br><span class="line">            LunchGuy LunchGuy2 = <span class="keyword">new</span> LunchGuy(<span class="string">"world"</span>, c);</span><br><span class="line">            LunchGuy LunchGuy3 = <span class="keyword">new</span> LunchGuy(<span class="string">"santa"</span>, c);</span><br><span class="line">            LunchGuy LunchGuy4 = <span class="keyword">new</span> LunchGuy(<span class="string">"HipPopMan"</span>, c);</span><br><span class="line">            c.Notify(<span class="number">3</span>);</span><br><span class="line">            c.Notify(<span class="number">5</span>);</span><br><span class="line">            c.Notify(<span class="number">3</span>);</span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>运行结果：</strong><br><img src="/2017/08/11/Publish:Subscribe/running2.png" alt="运行结果2"></p>
+<hr>
+<p>委托其实就和函数指针差不多，将函数当做参数来传递，上面的例子中，就是将每个LunchGuy类的GetNotify(int num)方法进行传递给被观察类来调用，也就是说被观察者在观察者进行注册之后，被观察者中的委托(事件)GetNotifyEvent成员变量记录了各个观察者的GetNotify(int num)的方法地址。</p>
+<p>然而，接口在实现观察者模式的时候，是通过用List\&lt;ICateenObserver>去记录了实现了ICateenObserver接口的对象，并通过这些实例化的对象来调用这些对象所实现的接口方法，当然也可以调用这些对象中允许其他类访问的成员变量和方法。也就是说被观察者(Subject)在观察者进行注册之后，被观察中的List\&lt;ICateenObserver> guests成员变量去记录了各个观察者对象的地址。</p>
+<p>从上面2段话，可以看出来接口和委托在实现发布/订阅机制（被观察者模式）设计模式中，一些关键的区别。<br>委托仅仅记录了各个观察者实现的特殊方法的地址，而用接口实现记录了各个观察者对象的地址，也就是说如果仅仅使用规定的方法用委托更加方便，然而接口却可以管理观察它的观察者的成员变量和其他方法（但是不推荐使用，这样分开观察者和被观察者的意义就没了）。</p>
+<p>因此，在发布/订阅机制中，推荐用委托来实现，更具有封装性。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">委托delegate</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">c#</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/11/Publish:Subscribe/">more >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-regex" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -792,10 +886,6 @@ Console.WriteLine(Regex.IsMatch(&quot;010-12345678&quot;, pattern1)); //get resu
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">递归</a>
               </li>
              
@@ -808,11 +898,7 @@ Console.WriteLine(Regex.IsMatch(&quot;010-12345678&quot;, pattern1)); //get resu
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">委托delegate</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -821,6 +907,14 @@ Console.WriteLine(Regex.IsMatch(&quot;010-12345678&quot;, pattern1)); //get resu
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">String</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">委托delegate</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -868,6 +962,10 @@ Console.WriteLine(Regex.IsMatch(&quot;010-12345678&quot;, pattern1)); //get resu
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">TCP/IP协议</a>
               </li>
              
@@ -884,7 +982,15 @@ Console.WriteLine(Regex.IsMatch(&quot;010-12345678&quot;, pattern1)); //get resu
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color2">游戏设计框架</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">ToLua</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">unity热更</a>
               </li>
              
               <li class="article-tag-list-item">

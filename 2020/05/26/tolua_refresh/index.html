@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 二进制流数据 | Santa_Blog</title>
+  <title>Unity游戏tolua热更原理 | Santa_Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Santa_Blog">
-<meta property="og:url" content="http://yoursite.com/tags/二进制流数据/index.html">
+  <meta name="description" content="惯例，贴一下别人的log:    ToLua框架下C#与Lua代码的互调   Unity使用tolua框架教程: LuaFramewrk  看了这2篇文章总结一下自己的理解… 1.ToLua的简单实现原理lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改">
+<meta name="keywords" content="游戏设计框架,ToLua,unity热更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity游戏tolua热更原理">
+<meta property="og:url" content="http://yoursite.com/2020/05/26/tolua_refresh/index.html">
 <meta property="og:site_name" content="Santa_Blog">
+<meta property="og:description" content="惯例，贴一下别人的log:    ToLua框架下C#与Lua代码的互调   Unity使用tolua框架教程: LuaFramewrk  看了这2篇文章总结一下自己的理解… 1.ToLua的简单实现原理lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2020/05/26/tolua_refresh/pic1.png">
+<meta property="og:updated_time" content="2020-05-26T10:32:32.359Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Santa_Blog">
+<meta name="twitter:title" content="Unity游戏tolua热更原理">
+<meta name="twitter:description" content="惯例，贴一下别人的log:    ToLua框架下C#与Lua代码的互调   Unity使用tolua框架教程: LuaFramewrk  看了这2篇文章总结一下自己的理解… 1.ToLua的简单实现原理lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/26/tolua_refresh/pic1.png">
   
     <link rel="alternative" href="/atom.xml" title="Santa_Blog" type="application/atom+xml">
   
@@ -150,68 +157,179 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tolua_refresh" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/17/zigzag/" class="archive-article-date">
-  	<time datetime="2018-04-17T03:57:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-17</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/17/zigzag/">zigzag数字压缩算法&amp;其在二进制流数据中的保存。</a>
+    <h1 class="article-title" itemprop="name">
+      Unity游戏tolua热更原理
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/05/26/tolua_refresh/" class="archive-article-date">
+  	<time datetime="2020-05-26T10:32:32.358Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>惯例，贴一下别人的log:  </p>
+<ul>
+<li><a href="https://www.jianshu.com/p/f083bbaa048a" target="_blank" rel="noopener">ToLua框架下C#与Lua代码的互调</a>  </li>
+<li><a href="https://blog.csdn.net/linxinfa/article/details/88246345" target="_blank" rel="noopener">Unity使用tolua框架教程: LuaFramewrk</a></li>
+</ul>
+<p>看了这2篇文章总结一下自己的理解…</p>
+<h3 id="1-ToLua的简单实现原理"><a href="#1-ToLua的简单实现原理" class="headerlink" title="1.ToLua的简单实现原理"></a>1.ToLua的简单实现原理</h3><p>lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改简单功能时，将Lua代码通过AssetBundle进行更新即可达到热更的效果。</p>
+<p>ToLua框架主要是通过静态绑定来实现C#与Lua之间的交互的，基本原理是通过建立一个Lua虚拟机来映射C#脚本，然后再通过这个虚拟机来运行Lua脚本，Lua脚本在运行时可以通过虚拟机反过来调用C#脚本里注册过的物体，这种方式的优势在于比起使用反射的uLua来说效率更高，但要注意，在这个框架中映射的过程里进行了大量的拆装箱，即使不算Lua本身的效率低下，这个巨大的拆装箱的量也会对性能造成非常大的影响，对于一些性能敏感的游戏最好还是选择性能更好的开发方案。</p>
+<p>ToLua框架下可以将实现分成三大部分：普通的Unity+C#部分、ToLua虚拟机部分和Lua脚本部分，结构见下图：<br><img src="/2020/05/26/tolua_refresh/pic1.png" alt="tolua框架"></p>
+<p>也就是项目框架，组件等主要写在c#部分，各功能的业务逻辑主要写在lua部分，那么自然核心就是需要让c#部分和lua部分能够实现互相调用就是这个框架的核心功能。</p>
+<h3 id="2-LuaManager核心管理器以及框架核心"><a href="#2-LuaManager核心管理器以及框架核心" class="headerlink" title="2.LuaManager核心管理器以及框架核心"></a>2.LuaManager核心管理器以及框架核心</h3><p>上面说到项目的框架部分主要使用c#来编写，因此控制循环（主循环）部分是由c#部分驱动的，大部分情况下应该是c#去调用lua部分的代码，而调用lua部分代码，lua虚拟机的生命周期等自然需要LuaManager作为管理类。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/weixinzhifu.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">数据压缩算法</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">游戏设计框架</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">zigzag</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">ToLua</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">二进制流数据</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">unity热更</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2020/05/26/tolua_refresh/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/04/26/note-2018-4.18/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">笔记--大天使之剑项目的网络传输类图和架构思路</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-    
+
+
+    <!-- UY BEGIN -->
+    <section id="comments">
+        <div id="uyan_frame"></div>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2131016"></script>
+    </section>
+    <!-- UY END -->
 
 
           </div>
@@ -234,9 +352,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
