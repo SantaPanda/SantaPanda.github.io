@@ -12,16 +12,16 @@
 <meta name="keywords" content="游戏设计框架,ToLua,unity热更">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity游戏tolua热更原理">
-<meta property="og:url" content="http://yoursite.com/2020/05/26/tolua_refresh/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/05/26/tolua-refresh/index.html">
 <meta property="og:site_name" content="Santa_Blog">
 <meta property="og:description" content="惯例，贴一下别人的log:    ToLua框架下C#与Lua代码的互调   Unity使用tolua框架教程: LuaFramewrk  看了这2篇文章总结一下自己的理解… 1.ToLua的简单实现原理lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2020/05/26/tolua_refresh/pic1.png">
+<meta property="og:image" content="http://yoursite.com/2020/05/26/tolua-refresh/pic1.png">
 <meta property="og:updated_time" content="2020-05-26T10:32:32.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity游戏tolua热更原理">
 <meta name="twitter:description" content="惯例，贴一下别人的log:    ToLua框架下C#与Lua代码的互调   Unity使用tolua框架教程: LuaFramewrk  看了这2篇文章总结一下自己的理解… 1.ToLua的简单实现原理lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改">
-<meta name="twitter:image" content="http://yoursite.com/2020/05/26/tolua_refresh/pic1.png">
+<meta name="twitter:image" content="http://yoursite.com/2020/05/26/tolua-refresh/pic1.png">
   
     <link rel="alternative" href="/atom.xml" title="Santa_Blog" type="application/atom+xml">
   
@@ -157,7 +157,7 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-tolua_refresh" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-tolua-refresh" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -169,7 +169,7 @@
   
 
         
-        <a href="/2020/05/26/tolua_refresh/" class="archive-article-date">
+        <a href="/2020/05/26/tolua-refresh/" class="archive-article-date">
   	<time datetime="2020-05-26T10:32:32.358Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-26</time>
 </a>
         
@@ -185,7 +185,7 @@
 <p>看了这2篇文章总结一下自己的理解…</p>
 <h3 id="1-ToLua的简单实现原理"><a href="#1-ToLua的简单实现原理" class="headerlink" title="1.ToLua的简单实现原理"></a>1.ToLua的简单实现原理</h3><p>lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改简单功能时，将Lua代码通过AssetBundle进行更新即可达到热更的效果。</p>
 <p>ToLua框架主要是通过静态绑定来实现C#与Lua之间的交互的，基本原理是通过建立一个Lua虚拟机来映射C#脚本，然后再通过这个虚拟机来运行Lua脚本，Lua脚本在运行时可以通过虚拟机反过来调用C#脚本里注册过的物体，这种方式的优势在于比起使用反射的uLua来说效率更高，但要注意，在这个框架中映射的过程里进行了大量的拆装箱，即使不算Lua本身的效率低下，这个巨大的拆装箱的量也会对性能造成非常大的影响，对于一些性能敏感的游戏最好还是选择性能更好的开发方案。</p>
-<p>ToLua框架下可以将实现分成三大部分：普通的Unity+C#部分、ToLua虚拟机部分和Lua脚本部分，结构见下图：<br><img src="/2020/05/26/tolua_refresh/pic1.png" alt="tolua框架"></p>
+<p>ToLua框架下可以将实现分成三大部分：普通的Unity+C#部分、ToLua虚拟机部分和Lua脚本部分，结构见下图：<br><img src="/2020/05/26/tolua-refresh/pic1.png" alt="tolua框架"></p>
 <p>也就是项目框架，组件等主要写在c#部分，各功能的业务逻辑主要写在lua部分，那么自然核心就是需要让c#部分和lua部分能够实现互相调用就是这个框架的核心功能。</p>
 <h3 id="2-LuaManager核心管理器以及框架核心"><a href="#2-LuaManager核心管理器以及框架核心" class="headerlink" title="2.LuaManager核心管理器以及框架核心"></a>2.LuaManager核心管理器以及框架核心</h3><p>上面说到项目的框架部分主要使用c#来编写，因此控制循环（主循环）部分是由c#部分驱动的，大部分情况下应该是c#去调用lua部分的代码，而调用lua部分代码，lua虚拟机的生命周期等自然需要LuaManager作为管理类。</p>
 
@@ -291,7 +291,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2020/05/26/tolua_refresh/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://yoursite.com/2020/05/26/tolua-refresh/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -304,6 +304,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2020/05/27/hexo-index-0kb/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          解决hexo generate 生成的时候index.html为0kb空白的问题
+        
+      </div>
+    </a>
   
   
     <a href="/2018/04/26/note-2018-4.18/" id="article-nav-older" class="article-nav-link-wrap">
@@ -426,19 +435,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">String</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">委托delegate</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">c#</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">String</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -470,6 +479,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">ip地址</a>
               </li>
              
@@ -482,11 +495,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">大天使之剑项目笔记</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color5">大天使之剑项目笔记</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -495,14 +508,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">js语法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -515,6 +520,14 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">unity热更</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">js语法</a>
               </li>
              
               <li class="article-tag-list-item">

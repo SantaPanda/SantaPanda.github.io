@@ -152,19 +152,81 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-tolua_refresh" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-hexo-index-0kb" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/26/tolua_refresh/">Unity游戏tolua热更原理</a>
+      <a class="article-title" href="/2020/05/27/hexo-index-0kb/">解决hexo generate 生成的时候index.html为0kb空白的问题</a>
     </h1>
   
 
         
-        <a href="/2020/05/26/tolua_refresh/" class="archive-article-date">
+        <a href="/2020/05/27/hexo-index-0kb/" class="archive-article-date">
+  	<time datetime="2020-05-27T07:49:31.154Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>###生成资源时，index的数据为空，原因是node.js的版本除了问题，这里直接挂个最后的解决方案。<br><a href="https://blog.tcs-y.com/2020/04/26/hexo-index-0kb/" target="_blank" rel="noopener">别人的链接</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/05/27/hexo-index-0kb/">more >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-tolua-refresh" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/26/tolua-refresh/">Unity游戏tolua热更原理</a>
+    </h1>
+  
+
+        
+        <a href="/2020/05/26/tolua-refresh/" class="archive-article-date">
   	<time datetime="2020-05-26T10:32:32.358Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-26</time>
 </a>
         
@@ -180,7 +242,7 @@
 <p>看了这2篇文章总结一下自己的理解…</p>
 <h3 id="1-ToLua的简单实现原理"><a href="#1-ToLua的简单实现原理" class="headerlink" title="1.ToLua的简单实现原理"></a>1.ToLua的简单实现原理</h3><p>lua作为unity项目中（c#项目）的胶水语言，以其即时编译的特点，并且可以被打包进入AssetBundle中（c#代码不可打包入AB中），所以被选择作为unity游戏最火的热更语言。在需要修改简单功能时，将Lua代码通过AssetBundle进行更新即可达到热更的效果。</p>
 <p>ToLua框架主要是通过静态绑定来实现C#与Lua之间的交互的，基本原理是通过建立一个Lua虚拟机来映射C#脚本，然后再通过这个虚拟机来运行Lua脚本，Lua脚本在运行时可以通过虚拟机反过来调用C#脚本里注册过的物体，这种方式的优势在于比起使用反射的uLua来说效率更高，但要注意，在这个框架中映射的过程里进行了大量的拆装箱，即使不算Lua本身的效率低下，这个巨大的拆装箱的量也会对性能造成非常大的影响，对于一些性能敏感的游戏最好还是选择性能更好的开发方案。</p>
-<p>ToLua框架下可以将实现分成三大部分：普通的Unity+C#部分、ToLua虚拟机部分和Lua脚本部分，结构见下图：<br><img src="/2020/05/26/tolua_refresh/pic1.png" alt="tolua框架"></p>
+<p>ToLua框架下可以将实现分成三大部分：普通的Unity+C#部分、ToLua虚拟机部分和Lua脚本部分，结构见下图：<br><img src="/2020/05/26/tolua-refresh/pic1.png" alt="tolua框架"></p>
 <p>也就是项目框架，组件等主要写在c#部分，各功能的业务逻辑主要写在lua部分，那么自然核心就是需要让c#部分和lua部分能够实现互相调用就是这个框架的核心功能。</p>
 <h3 id="2-LuaManager核心管理器以及框架核心"><a href="#2-LuaManager核心管理器以及框架核心" class="headerlink" title="2.LuaManager核心管理器以及框架核心"></a>2.LuaManager核心管理器以及框架核心</h3><p>上面说到项目的框架部分主要使用c#来编写，因此控制循环（主循环）部分是由c#部分驱动的，大部分情况下应该是c#去调用lua部分的代码，而调用lua部分代码，lua虚拟机的生命周期等自然需要LuaManager作为管理类。</p>
 
@@ -214,7 +276,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/05/26/tolua_refresh/">more >></a>
+          <a class="article-more-a" href="/2020/05/26/tolua-refresh/">more >></a>
         </p>
       
 
@@ -852,135 +914,6 @@
 
 
   
-    <article id="post-c#Delegate&amp;Interface" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/11/c#Delegate&Interface/">c#委托学习，并分析c#中委托和接口的作用区别</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/11/c#Delegate&Interface/" class="archive-article-date">
-  	<time datetime="2017-08-11T07:53:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先我觉得c#中的新概念委托所能实现的功能，接口都可以实现，那么新概念委托究竟和接口有什么区别，加入它的意义是什么，让我用此文记录一下。</p>
-<h3 id="delegate"><a href="#delegate" class="headerlink" title="delegate"></a>delegate</h3><p>委托的定义就不赘述了，来讲一下它的作用。  </p>
-<ul>
-<li>委托的作用：  <ul>
-<li>委托类似于C++函数指针，但它们是类型安全的。</li>
-<li>委托允许将方法作为参数进行传递。（接口也可以）</li>
-<li>委托可用于定义回调方法（接口也可以）。</li>
-<li>委托可以链接在一起；例如，可以对一个事件调用多个方法。</li>
-<li>方法不必与委托签名完全匹配。</li>
-</ul>
-</li>
-</ul>
-<p>下面关于使用委托进行实现快排的例子。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickSortClass</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">QuickSortClass</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> QuickSort&lt;T&gt;(T[] ArrayList, <span class="keyword">int</span> left, <span class="keyword">int</span> right, CompareMethod&lt;T&gt; Compare)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (left &lt; right)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> middle = QSort(ArrayList, left, right, Compare);</span><br><span class="line">            QuickSort(ArrayList, left, middle - <span class="number">1</span>, Compare);</span><br><span class="line">            QuickSort(ArrayList, middle + <span class="number">1</span>, right, Compare);</span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">private</span> delegate bool CompareMethod&lt;T&gt;(T a, T b);</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> QSort&lt;T&gt;(T[] ArrayList, <span class="keyword">int</span> left, <span class="keyword">int</span> right, CompareMethod&lt;T&gt; Compare)</span><br><span class="line">    &#123;</span><br><span class="line">        T point = ArrayList[left];</span><br><span class="line">        <span class="keyword">while</span> (left &lt; right)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (left &lt; right &amp;&amp; Compare(point, ArrayList[right]))</span><br><span class="line">            &#123;</span><br><span class="line">                right--;</span><br><span class="line">            &#125;</span><br><span class="line">            Swap(ArrayList, left, right);</span><br><span class="line">            <span class="keyword">while</span> (left &lt; right &amp;&amp; Compare(ArrayList[left], point))</span><br><span class="line">            &#123;</span><br><span class="line">                left++;</span><br><span class="line">            &#125;</span><br><span class="line">            Swap(ArrayList, left, right);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> left;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">void</span> Swap&lt;T&gt;(T[] ArrayList, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span><br><span class="line">    &#123;</span><br><span class="line">        T temp = ArrayList[left];</span><br><span class="line">        ArrayList[left] = ArrayList[right];</span><br><span class="line">        ArrayList[right] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">static</span> bool <span class="title">Compare</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (a &lt;= b)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] ArrayList = &#123;<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">11</span>&#125;;</span><br><span class="line">        QuickSortClass.QuickSort(ArrayList, <span class="number">0</span>, ArrayList.Length-<span class="number">1</span>, QuickSortClass.Compare);</span><br><span class="line">        foreach (var temp in ArrayList)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.Write(temp + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Console.ReadKey();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先，可以看出来委托签名作为定义方法的模板提供了类似于接口的功能，对于一个方法只要求提供签名部分，让不同的类去实现不同的方法体。<br>其次，将方法当做类型的思想也和接口十分相似，因为接口是一个只定义了方法签名的超类（接口&amp;抽象类），并且具备类型兼容性，例如实现了IComparable接口的EspecialInt类，它的实例化函数可以写成：<br><code>IComparable e = new EspecialInt();</code><br>因此，用接口作为方法的参数类型可以实现函数回调和将函数作为参数的效果。<br>所以就上述例子来看，接口和委托都能实现函数回调和将方法作为参数传递的功能，但是接口必须依赖于其他类的实现而存在（除了使用匿名函数），而委托是相对独立的类型。</p>
-<h3 id="Aciton和Func"><a href="#Aciton和Func" class="headerlink" title="Aciton和Func"></a>Aciton和Func</h3><p>(1)delegate  </p>
-<ul>
-<li>delegate是我们常用的一种声明。  </li>
-<li>Delegate至少0个参数，至多32个参数，可以无返回值，也可以有返回值。</li>
-</ul>
-<p>(2)Action  </p>
-<ul>
-<li>Action是无返回值得泛型委托。</li>
-<li>Action 表示无参，无返回值的委托。</li>
-<li>Action&lt;int, string&gt;表示有传入参数int, string无返回值的委托。</li>
-<li>Action&lt;int, string, bool&gt;表示有传入参数int, string, bool无返回值的委托。</li>
-<li>Action至少0个参数，至多16个参数，无返回值。  </li>
-</ul>
-<p>ex:  <code>public void Test&lt;T&gt;(Action&lt;T&gt; action, T a){action(a)}</code>  </p>
-<p>(3)Func  </p>
-<ul>
-<li>Func是有返回值的泛型委托。</li>
-<li>Func<int>表示无参，返回值为int的委托。</int></li>
-<li>Func&lt;int, string, object&gt;表示传入参数为int, string, 返回值为object型的委托。</li>
-<li>Func&lt;T1, T2, T3, int&gt;表示传入参数为T1,T2,T3(泛型)返回值为int型的委托。</li>
-<li>Func至少0个参数，至多16个参数，根据返回值泛型返回。必须有返回值,不可以void。</li>
-</ul>
-<p>ex: <code>public int Test&lt;T1, T2&gt;(Func&lt;T1, T2, int&gt; func, T1 a, T2 b){return func(a, b)}</code>  </p>
-<h3 id="多播委托"><a href="#多播委托" class="headerlink" title="多播委托"></a>多播委托</h3><p>一个委托可以包含多个方法调用，称为多播委托。  </p>
-<p> 当调用多播委托时，它连续调用每一个方法，当调用过程中，委托必须为同类型（这点非常关键，但并不是表示返回值类型和参数类型都必须完全相同，因为委托具有允许方法不必与委托签名完全匹配的特点。这点与接口不同，各有利弊）。<br> 返回类型一般为void,这样才能将委托的单个实例合并为一个多播委托。如果委托具有返回返回值/或输出参数，它将返回最后调用的方法的返回值和参数。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 多播委托</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiDelegate</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> delegate <span class="keyword">int</span> <span class="title">DemoMultiDelegate</span><span class="params">(out <span class="keyword">int</span> x)</span></span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Show1</span><span class="params">(out <span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">	</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	</span><br><span class="line">	x = <span class="number">1</span>;</span><br><span class="line">	</span><br><span class="line">	Console.WriteLine(<span class="string">"This is the first show method:"</span>+x);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Show2</span><span class="params">(out <span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line"></span><br><span class="line">	x = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">"This is the second show method:"</span>+x);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Show3</span><span class="params">(out <span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line"></span><br><span class="line">	x = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">"This is the third show method:"</span>+x);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/// &lt;summary&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/// 调用多播委托</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">	</span><br><span class="line">	DemoMultiDelegate dmd = <span class="keyword">new</span> DemoMultiDelegate(Show1);</span><br><span class="line">	</span><br><span class="line">	dmd += <span class="keyword">new</span> DemoMultiDelegate(Show2);</span><br><span class="line">	</span><br><span class="line">	dmd += <span class="keyword">new</span> DemoMultiDelegate(Show3);<span class="comment">//检查结果</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> y= dmd(out x);</span><br><span class="line">	</span><br><span class="line">	Console.WriteLine(y);</span><br><span class="line">	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*----------------------多播委托---------------------------------*/</span></span><br><span class="line"></span><br><span class="line">MultiDelegate multiDelegate = <span class="keyword">new</span> MultiDelegate();</span><br><span class="line"></span><br><span class="line">multiDelegate.Show();</span><br></pre></td></tr></table></figure>
-<p>输出的结果是3.</p>
-<p>这里讲一下多播委托在观察者模式中相比接口的好处。<br>首先被观察者本身是不知道多少个观察者在观察他，他需要通知多少个观察者（为了让观察者和被观察者更好地封装，使修改观察者代码的时候不需要考虑被观察者的实现），因此，一般需要用成员变量List\&lt;T>，以及实现addListener()和deleteListener()方法。然而委托却可以通过多播委托来省去这部分的实现，直接让一个委托去包含所有的方法调用。</p>
-<h3 id="匿名函数和Lambda表达式"><a href="#匿名函数和Lambda表达式" class="headerlink" title="匿名函数和Lambda表达式"></a>匿名函数和Lambda表达式</h3><p>当使用委托时，不想命名函数名，可以使用匿名函数（适合用于不常被调用的方法。）<br>下面看一下匿名函数的例子。  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;<span class="keyword">int</span>, string, bool&gt; func1 = delegate(<span class="keyword">int</span> a, string name)&#123;</span><br><span class="line">	<span class="keyword">if</span>(name.Length &lt;= a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>除此之外，还有更加简单的形式就是Lambda表达式。<br>上述的代码可以用Lambda表达式表示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Func&lt;<span class="keyword">int</span>, string, bool&gt; func1 = (a, name) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(name.Length &lt;= a)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果参数和返回值只有一个，那么可以省去()和return。<br>例如：<br><code>Func&lt;int, int&gt; func1 = a =&gt; a+1</code><br>等于<br><code>Func&lt;int, int&gt; func1 = delegate(int a){return a+1;}</code></p>
-<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>事件(event)基于委托，为委托提供了一个发布/订阅机制，我们可以说事件是一种具有特殊签名的委托。</p>
-<ul>
-<li>事件：<ul>
-<li>事件(event)是类或对象向其他类或对象通知发生的事情的一种特殊签名的委托。</li>
-<li>public event委托类型事件名。</li>
-<li>事件使用event关键词来声明，他的返回值是一个委托类型。</li>
-<li>通常事件的命名，以名字+Event作为它的名字。</li>
-<li>事件只能定义为类的成员变量，不能定义为局部变量。</li>
-</ul>
-</li>
-</ul>
-<p>事件和委托的区别：<br>事件就是一个狭义的委托,也就是事件是一个用于事件驱动模型的专用委托.你可以在客户代码中直接调用委托来激发委托指向的函数,而事件不可以，事件的触发只能由服务代码自己触发。<br>也就是说，事件的触发调用以及’=’（赋值）操作，只能在定义事件的类中调用(事件的这2个方法是private的)，而在其他类中不能使用。其他类中只能使用”+=”&amp;”-=”操作给委托进行注册和注销操作。<br>好处就是：对委托在发布/订阅机制中进行了更好的封装，提高了安全性。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">委托delegate</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">c#</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/11/c#Delegate&Interface/">more >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1082,19 +1015,19 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">String</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">委托delegate</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">c#</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">String</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1126,6 +1059,10 @@
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">ip地址</a>
               </li>
              
@@ -1138,11 +1075,11 @@
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">大天使之剑项目笔记</a>
+                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">正则表达式</a>
+                <a href="javascript:void(0)" class="js-tag color5">大天使之剑项目笔记</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1151,14 +1088,6 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">js语法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1171,6 +1100,14 @@
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">unity热更</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">js语法</a>
               </li>
              
               <li class="article-tag-list-item">
